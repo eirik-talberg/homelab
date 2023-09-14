@@ -1,0 +1,9 @@
+- name: "Setup PVE host for benchmarking"
+  hosts:
+    - pve-hosts
+  tasks:
+    - name: "Install FIO"
+      ansible.builtin.apt:
+        name: fio
+        update_cache: yes
+        state: present

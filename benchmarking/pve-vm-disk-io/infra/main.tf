@@ -10,7 +10,7 @@ terraform {
 provider "proxmox" {
   pm_api_url = "https://${var.pve_host}:8006/api2/json"
 
-
+/** Uncomment for debugging
   pm_log_enable = true
   pm_log_file = "terraform-plugin-proxmox.log"
   pm_debug = true
@@ -18,7 +18,7 @@ provider "proxmox" {
     _default = "debug"
     _capturelog = ""
   }
-
+*/
 }
 
 data "template_file" "user_data" {

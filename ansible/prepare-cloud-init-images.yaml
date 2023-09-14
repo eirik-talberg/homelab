@@ -1,0 +1,48 @@
+- name: Create CloudInit image for KVM hosts
+  hosts:
+    - localhost
+  tasks:
+    - name: "Check if download is necessary"
+      ansible.builtin.stat:
+        path: /tmp/jammy-server-cloudimg-amd64.img
+      register: image_status
+    - name: "Download current cloud image"
+      ansible.builtin.get_url:
+        url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+        dest: /tmp/
+      when: not image_status.stat.exists
+    - name: "Install qemu-guest-agent on cloud image"
+      ansible.builtin.shell:
+        cmd: sudo virt-customize -a /tmp/jammy-server-cloudimg-amd64.img --install qemu-guest-agent
+- name: "Copy image to PVE hosts"
+  hosts:
+    - pve-hosts
+  vars:
+    vm_id: 9999
+    memory: 2048
+    storage_pool: local-btrfs
+    template_name: ubuntu-2204-cloud-init
+  tasks:
+    - name: "Copy cloud image"
+      ansible.builtin.copy:
+        src: /tmp/jammy-server-cloudimg-amd64.img
+        dest: /tmp/jammy-server-cloudimg-amd64.img
+    - name: "Delete old VM or template"
+      ansible.builtin.shell:
+        cmd: qm destroy {{ vm_id }}
+      ignore_errors: true
+    - name: "Create VM for template"
+      ansible.builtin.shell:
+        cmd: qm create {{ vm_id }} --name {{ template_name }} --memory {{ memory }} --net0 virtio,bridge=vmbr0 --scsihw virtio-scsi-pci
+    - name: "Import cloud image to VM"
+      ansible.builtin.shell:
+        cmd: qm set {{ vm_id }} --scsi0 {{ storage_pool }}:0,import-from=/tmp/jammy-server-cloudimg-amd64.img
+    - name: "Set boot order for faster boot"
+      ansible.builtin.shell:
+        cmd: qm set {{ vm_id }} --boot order=scsi0
+    - name: "Set VGA output"
+      ansible.builtin.shell:
+        cmd: qm set {{ vm_id }} --serial0 socket --vga serial0
+    - name: "Create template from VM"
+      ansible.builtin.shell:
+        cmd: qm template {{ vm_id }}

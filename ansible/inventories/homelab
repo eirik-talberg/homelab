@@ -1,0 +1,5 @@
+[all]
+ansible_user=taldev
+
+[pve-hosts]
+10.0.69.12 ansible_user=root

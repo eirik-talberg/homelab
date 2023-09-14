@@ -1,0 +1,52 @@
+- name: "Create API user"
+  hosts:
+    - pve-hosts
+  vars:
+    role_name: terraform
+    user_name: terraform
+    password: "{{ lookup('ansible.builtin.password', '/tmp/terraform_password') }}"
+    privileges:
+      - Datastore.AllocateSpace
+      - Datastore.Audit
+      - Pool.Allocate
+      - Sys.Audit
+      - Sys.Console
+      - Sys.Modify
+      - VM.Allocate
+      - VM.Audit
+      - VM.Clone
+      - VM.Config.CDROM
+      - VM.Config.Cloudinit
+      - VM.Config.CPU
+      - VM.Config.Disk
+      - VM.Config.HWType
+      - VM.Config.Memory
+      - VM.Config.Network
+      - VM.Config.Options
+      - VM.Migrate
+      - VM.Monitor
+      - VM.PowerMgmt
+      - SDN.Use
+  tasks:
+    - name: "Check if role already exists"
+      ansible.builtin.shell:
+        cmd: pveum role list --noborder 1 --noheader 1 | grep {{ role_name }}
+      register: role_exists
+    - name: "Add new role for provisioning users"
+      ansible.builtin.shell:
+        cmd: pveum role add {{ role_name }}
+      when: not role_exists
+    - name: "Set privileges for role"
+      ansible.builtin.shell:
+        cmd: pveum role modify {{ role_name }} -privs "{{ privileges | join(' ')  }}"
+    - name: "Check if user already exists"
+      ansible.builtin.shell:
+        cmd: pveum user list --noborder 1 --noheader 1 | grep {{ user_name }}
+      register: user_exists
+    - name: "Add user"
+      ansible.builtin.shell:
+        cmd: pveum user add {{ user_name }}@pve --password {{ password }}
+      when: not user_exists
+    - name: "Add role to user"
+      ansible.builtin.shell:
+        cmd: pveum aclmod / -user {{ user_name }}@pve -role {{ role_name }}

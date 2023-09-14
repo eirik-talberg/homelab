@@ -5,3 +5,6 @@ tfplan
 .tfvars
 *.log
 *.env
+
+**/infra/files/*.cfg
+config.py

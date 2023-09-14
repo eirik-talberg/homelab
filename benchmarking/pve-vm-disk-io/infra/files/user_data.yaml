@@ -19,7 +19,7 @@ package_update: true
 package_upgrade: true
 
 packages:
-  - jq
+  - fio
 
 disk_setup:
   /dev/sdb:
@@ -37,6 +37,7 @@ mounts:
 
 runcmd:
   - hostnamectl hostname ${hostname}
+  - chown ${node_user}:${node_user} /opt/data
   - shutdown -r now
 
 
