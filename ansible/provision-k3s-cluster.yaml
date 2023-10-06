@@ -1,0 +1,11 @@
+- name: "Provision nodes"
+  hosts:
+    - localhost
+  vars:
+    cluster_name: sandbox
+  tasks:
+    - name: "Create infrastructure"
+      community.general.terraform:
+        project_path: ../k8s/clusters/{{ cluster_name }}
+        init_reconfigure: true
+        force_init: true

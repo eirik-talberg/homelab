@@ -1,0 +1,9 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+traefik:
+  version: 24.0.0
+cert_manager:
+  version: 1.13.1
+  values:
+    installCRDs: true

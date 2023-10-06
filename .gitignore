@@ -8,3 +8,4 @@ tfplan
 
 **/infra/files/*.cfg
 config.py
+ansible/k3s-ansible

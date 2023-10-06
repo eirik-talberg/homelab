@@ -1,0 +1,49 @@
+#cloud-config
+
+groups:
+  - admingroup: [root,sys]
+  - cloud-users
+      'ssh_authorized_keys', 'ssh_redirect_user'.
+users:
+  - default
+  - name: ${node_user}
+    gecos: ${node_gecos}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /usr/bin/bash
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ${pubkey}
+
+package_update: true
+package_upgrade: true
+
+packages:
+%{ for package in install_packages ~}
+  - ${package}
+%{ endfor ~}
+
+%{ if storage_disk != null ~}
+disk_setup:
+  /dev/sdb:
+    table_type: gpt
+    layout: true
+
+fs_setup:
+  - device: /dev/sdb1
+    filesystem: "ext4"
+    partition: "auto"
+
+mounts:
+  - [ sdb, /opt/data ]
+%{ endif ~}
+
+runcmd:
+%{ if storage_disk != null ~}
+  - chown ${node_user}:${node_user} /opt/data
+%{ endif ~}
+  - hostnamectl hostname ${hostname}
+  - shutdown -r now
+
+
+

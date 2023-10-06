@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 ansible = "^8.2.0"
+netaddr = ">=0.8.0"
 
 
 [build-system]

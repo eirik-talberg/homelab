@@ -1,0 +1,14 @@
+# K3S
+[master]
+%{ for node in master_nodes ~}
+${node}.${domain}
+%{ endfor ~}
+
+[node]
+%{ for node in agent_nodes ~}
+${node}.${domain}
+%{ endfor ~}
+
+[k3s_cluster:children]
+master
+node

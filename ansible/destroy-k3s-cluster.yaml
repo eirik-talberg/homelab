@@ -1,0 +1,11 @@
+- name: "Destroy K3s Cluster"
+  hosts:
+    - localhost
+  vars:
+    cluster_name: sandbox
+  tasks:
+    - name: "Destroy infrastructure"
+      community.general.terraform:
+        project_path: ../k8s/clusters/{{ cluster_name }}
+        force_init: true
+        state: absent

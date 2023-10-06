@@ -1,0 +1,6 @@
+- name: "Configure Kubernetes"
+  hosts:
+    - k3s_cluster
+  run_once: true
+  roles:
+    - cluster_infrastructure
