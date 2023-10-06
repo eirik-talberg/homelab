@@ -43,10 +43,10 @@ This diagram shows the physical nodes in the lab.
 
 ### Server(s)
 
-| Name   | Role       | OS           | CPU                      | RAM  | SSDs      | HDDs        |
-|--------|------------|--------------|--------------------------|------|-----------|-------------|
-| dis    | NAS        | UnRaid 6.12  | AMD Ryzen 5600/32GB      | 32GB | 256GB     | 18TB / 12TB |
-| pve-01 | Hypervisor | Proxmox VE 8 | AMD Ryzen 5800X/64GB RAM | 64GB | 2TB / 1TB | N/A         |
+| Name   | Role       | OS           | CPU             | RAM  | SSDs                          | HDDs                          |
+|--------|------------|--------------|-----------------|------|-------------------------------|-------------------------------|
+| dis    | NAS        | UnRaid 6.12  | AMD Ryzen 5600  | 32GB | 1x256GB (Cache)               | 1x6TB (Parity), 3x4TB Storage |
+| pve-01 | Hypervisor | Proxmox VE 8 | AMD Ryzen 5800X | 64GB | 2x256GB (OS), 2x1TB (Storage) | N/A                           |
 
 ## Software
 
