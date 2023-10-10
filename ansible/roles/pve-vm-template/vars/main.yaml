@@ -1,0 +1,4 @@
+vm_id: 9999
+memory: 2048
+storage_pool: local-btrfs
+template_name: ubuntu-2204-cloud-init

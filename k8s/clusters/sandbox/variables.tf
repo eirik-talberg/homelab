@@ -7,10 +7,12 @@ locals {
       "k3s-sbx-01" = {
         vm_id        = 151
         cores        = 2
-        memory       = 4096
+        memory       = 2048
         os_disk      = {}
         storage_disk = {}
       },
+    },
+    "agent" = {
       "k3s-sbx-02" = {
         vm_id        = 152
         cores        = 2
@@ -24,8 +26,14 @@ locals {
         memory       = 4096
         os_disk      = {}
         storage_disk = {}
+      },
+      "k3s-sbx-04" = {
+        vm_id        = 154
+        cores        = 2
+        memory       = 4096
+        os_disk      = {}
+        storage_disk = {}
       }
-    },
-    "agent" = {}
+    }
   }
 }

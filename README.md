@@ -8,13 +8,13 @@ different kinds of workloads and applications.
 
 ## What's where?
 
-| Directory    | Description                                              |
-|--------------|----------------------------------------------------------|
-| ansible      | Root folder for ansible playbooks, roles and inventories |
-| benchmarking | Benchmarks with results for different kinds of workloads |
-| k8s          | Root folder for Kubernetes configurations                |
-| tfmodules    | Reusable Terraform modules for different configurations  |
-| docs         | Diagrams, resources and stuff for the documentation      |
+| Directory                    | Description                                              |
+|------------------------------|----------------------------------------------------------|
+| [ansible](ansible)           | Root folder for ansible playbooks, roles and inventories |
+| [benchmarking](benchmarking) | Benchmarks with results for different kinds of workloads |
+| [k8s](k8s)                   | Root folder for Kubernetes configurations                |
+| [tfmodules](tfmodules)       | Reusable Terraform modules for different configurations  |
+| [docs](docs)                 | Diagrams, resources and stuff for the documentation      |
 
 ## Tools
 

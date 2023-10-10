@@ -2,9 +2,16 @@ locals {
   project_root = "${path.module}/../../.."
 }
 
-module "pve-vms" {
+module "master-nodes" {
   source = "../../../tfmodules/pve-vms"
   nodes  = local.nodes.master
+  subnet = local.subnet
+  domain = local.domain
+}
+
+module "agent-nodes" {
+  source = "../../../tfmodules/pve-vms"
+  nodes  = local.nodes.agent
   subnet = local.subnet
   domain = local.domain
 }

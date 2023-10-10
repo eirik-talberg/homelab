@@ -30,6 +30,7 @@ resource "local_file" "cloud_init_user_data_file" {
     hostname         = each.key
     install_packages = var.install_packages
     storage_disk     = each.value.storage_disk
+    domain           = var.domain
   })
   filename = "/tmp/${each.key}.cfg"
 }
@@ -79,6 +80,7 @@ resource "proxmox_vm_qemu" "vms" {
     size     = each.value.os_disk.size
     iothread = each.value.os_disk.io_thread
     discard  = each.value.os_disk.discard
+    ssd      = each.value.os_disk.ssd
   }
 
   # Mass storage, sdb
@@ -91,6 +93,7 @@ resource "proxmox_vm_qemu" "vms" {
       size     = each.value.storage_disk.size
       iothread = each.value.storage_disk.io_thread
       discard  = each.value.storage_disk.discard
+      ssd      = each.value.storage_disk.ssd
     }
   }
 

@@ -1,0 +1,17 @@
+- name: "Check if download is necessary"
+  ansible.builtin.stat:
+    path: "{{ cloud_image_location }}"
+  register: image_status
+- name: "Download current cloud image"
+  ansible.builtin.get_url:
+    url: "{{ download_url }}"
+    dest: "{{ cloud_image_location }}"
+  when: not image_status.stat.exists
+- name: "Install qemu-guest-agent on cloud image"
+  ansible.builtin.shell:
+    cmd: sudo virt-customize -a {{ cloud_image_location }} --install qemu-guest-agent
+  become: yes
+- name: "Enable qemu-guest-agent service on cloud image"
+  ansible.builtin.shell:
+    cmd: sudo virt-customize -a {{ cloud_image_location }} --firstboot-command 'sudo service qemu-guest-agent start'
+  become: yes

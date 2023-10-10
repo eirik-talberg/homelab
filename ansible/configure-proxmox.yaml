@@ -1,0 +1,5 @@
+- name: "Configure PVE hosts"
+  hosts:
+    - pve-hosts
+  roles:
+    - proxmox
