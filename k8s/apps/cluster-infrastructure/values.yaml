@@ -7,3 +7,38 @@ cert_manager:
   version: 1.13.1
   values:
     installCRDs: true
+  webhook_domeneshop:
+    version: c2fe09d
+    values:
+      groupName: "example.com"
+      supportClusterIssuer: true
+  issuers:
+    acme:
+      taldev_no:
+        staging:
+          name: taldevno-staging
+          email: "noreply@example.com"
+          server: https://acme-staging-v02.api.letsencrypt.org/directory
+          secretName: letsencrypt-account-key-staging
+          groupName: "example.com"
+          credentials:
+            secret: domeneshop-credentials
+            api_token_ref: token
+            api_secret_ref: secret
+        prod:
+          name: taldevno
+          email: "noreply@example.com"
+          server: https://acme-v02.api.letsencrypt.org/directory
+          secretName: letsencrypt-account-key-staging
+          groupName: "example.com"
+          credentials:
+            secret: domeneshop-credentials
+            api_token_ref: token
+            api_secret_ref: secret
+argocd:
+  ingress:
+    host: "argocd.mycluster.example.com"
+    service_name: argo-cd-argocd-server
+    port_name: http
+    certificate: argocd-server-tls-certificate
+    
