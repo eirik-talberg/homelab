@@ -4,7 +4,7 @@ metadata:
   name: argocd-server-certificate
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   dnsNames:
     - "{{ .Values.argocd.ingress.host }}"
@@ -19,7 +19,7 @@ metadata:
   name: argocd-server
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   entryPoints:
     - websecure
