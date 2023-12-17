@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.name }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # To prevent error messages due to CRDs not yet being registered in the cluster upon apply (cert-manager CRDs that are installed in the same package)
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
     email: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.email }}
@@ -11,17 +12,17 @@ spec:
     privateKeySecretRef:
       name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.secretName }}
     solvers:
-    - dns01:
-        webhook:
-          groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.groupName }}
-          solverName: domeneshop
-          config: # TODO: Create these with ESO
-            APITokenSecretRef:
-              key: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.api_token_ref }}
-              name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.secret }}
-            APISecretSecretRef:
-              key: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.api_secret_ref }}
-              name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.secret }}
+      - dns01:
+          webhook:
+            groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.groupName }}
+            solverName: domeneshop
+            config: # TODO: Create these with ESO
+              APITokenSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.api_token_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.secret }}
+              APISecretSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.api_secret_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.credentials.secret }}
 {{- if .Values.cert_manager.issuers.acme.taldev_no.staging }}
 ---
 apiVersion: cert-manager.io/v1
@@ -30,6 +31,7 @@ metadata:
   name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.name }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
     email: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.email }}
@@ -37,15 +39,15 @@ spec:
     privateKeySecretRef:
       name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.secretName }}
     solvers:
-    - dns01:
-        webhook:
-          groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.groupName }}
-          solverName: domeneshop
-          config:
-            APITokenSecretRef:
-              key: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.api_token_ref }}
-              name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.secret }}
-            APISecretSecretRef:
-              key: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.api_secret_ref }}
-              name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.secret }}
+      - dns01:
+          webhook:
+            groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.groupName }}
+            solverName: domeneshop
+            config:
+              APITokenSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.api_token_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.secret }}
+              APISecretSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.api_secret_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.staging.credentials.secret }}
 {{ end -}}

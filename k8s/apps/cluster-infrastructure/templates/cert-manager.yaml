@@ -5,6 +5,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     namespace: cert-manager
@@ -14,12 +16,12 @@ spec:
     - repoURL: https://charts.jetstack.io
       chart: cert-manager
       targetRevision: {{ .Values.cert_manager.version }}
-      helm: 
+      helm:
         valuesObject: {{ .Values.cert_manager.values | toYaml | nindent 10 }}
     - repoURL: https://github.com/eirik-talberg/cert-manager-webhook-domeneshop
       path: deploy/domeneshop-webhook
       targetRevision: {{ .Values.cert_manager.webhook_domeneshop.version }}
-      helm: 
+      helm:
         valuesObject: {{ .Values.cert_manager.webhook_domeneshop.values | toYaml | nindent 10 }}
   syncPolicy:
     automated: { }
