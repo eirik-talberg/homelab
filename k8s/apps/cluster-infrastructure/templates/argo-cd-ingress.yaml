@@ -7,11 +7,11 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   dnsNames:
-    - { { .Values.argocd.ingress.host } }
+    - "{{ .Values.argocd.ingress.host }}"
   issuerRef:
-    name: { { .Values.cert_manager.issuers.acme.taldev_no.prod.name } }
+    name: "{{ .Values.cert_manager.issuers.acme.taldev_no.prod.name }}"
     kind: ClusterIssuer
-  secretName: { { .Values.argocd.ingress.certificate } }
+  secretName: "{{ .Values.argocd.ingress.certificate }}"
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -28,14 +28,14 @@ spec:
       match: Host(`{{ .Values.argocd.ingress.host }}`)
       priority: 10
       services:
-        - name: { { .Values.argocd.ingress.service_name } }
-          port: { { .Values.argocd.ingress.port_name } }
+        - name: "{{ .Values.argocd.ingress.service_name }}"
+          port: "{{ .Values.argocd.ingress.port_name }}"
     - kind: Rule
       match: Host(`{{ .Values.argocd.ingress.host }}`) && Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
-        - name: { { .Values.argocd.ingress.service_name } }
-          port: { { .Values.argocd.ingress.port_name } }
+        - name: "{{ .Values.argocd.ingress.service_name }}"
+          port: "{{ .Values.argocd.ingress.port_name }}"
           scheme: h2c
   tls:
-    secretName: { { .Values.argocd.ingress.certificate } }
+    secretName: "{{ .Values.argocd.ingress.certificate }}"
