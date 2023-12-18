@@ -1,0 +1,6 @@
+- name: "Render Application template"
+  ansible.builtin.template:
+    src: templates/application.yaml.j2
+    dest: "{{ manifest_directory }}/application.yaml"
+- name: "Apply Application manifest"
+  ansible.builtin.shell: "{{ kubectl_cmd }} apply -f {{ manifest_directory }}/application.yaml"

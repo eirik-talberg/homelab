@@ -1,6 +1,11 @@
+- name: "Prepare Longhorn nodes"
+  hosts:
+    - node
+  roles:
+    - longhorn-nodes
 - name: "Configure Kubernetes"
   hosts:
     - k3s_cluster
   run_once: true
   roles:
-    - cluster_infrastructure
+    - k8s_cluster

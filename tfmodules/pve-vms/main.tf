@@ -69,6 +69,7 @@ resource "proxmox_vm_qemu" "vms" {
   scsihw    = "virtio-scsi-single"
   os_type   = "cloud-init"
   ipconfig0 = "gw=${var.gateway},ip=${var.subnet}.${each.value.vm_id}/16"
+  onboot = true
 
   cicustom                = "user=local:snippets/${each.key}.yml"
   cloudinit_cdrom_storage = var.storage_pool

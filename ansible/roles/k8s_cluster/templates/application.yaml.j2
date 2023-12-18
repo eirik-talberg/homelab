@@ -13,6 +13,9 @@ spec:
   sources:
     - repoURL: "{{ repo_url }}"
       path: "{{ path }}"
-      targetRevision: HEAD
+      targetRevision: "{{ apps.cluster_infrastructure.targetRevision }}"
+      helm:
+        valueFiles:
+          - "values-{{ cluster_short_name }}.yaml"
   syncPolicy:
     automated: { }

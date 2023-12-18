@@ -5,30 +5,26 @@
   ansible.builtin.file:
     dest: "{{ manifest_directory }}"
     state: directory
-- name: "Render Namespace template"
-  ansible.builtin.template:
-    src: templates/namespace.yaml.j2
-    dest: "{{ manifest_directory }}/argocd-namespace.yaml"
-- name: "Create ArgoCD namespace"
-  ansible.builtin.command:
-    cmd: "{{ kubectl_cmd }} apply -f {{ manifest_directory }}/argocd-namespace.yaml"
-- name: "Render ArgoCD kustomization"
-  ansible.builtin.template:
-    src: templates/kustomization.yaml.j2
-    dest: "{{ manifest_directory }}/kustomization.yaml"
-- name: "Run kustomize"
-  ansible.builtin.command:
-    cmd: "{{ kubectl_cmd }} kustomize {{ manifest_directory }}"
-- name: "Apply ArgoCD"
-  ansible.builtin.command:
-    cmd: "{{ kubectl_cmd }} apply -k {{ manifest_directory }}"
-- name: "Render Application template"
-  ansible.builtin.template:
-    src: templates/application.yaml.j2
-    dest: "{{ manifest_directory }}/application.yaml"
-- name: "Apply Application manifest"
-  ansible.builtin.command:
-    cmd: "{{ kubectl_cmd }} apply -f {{ manifest_directory }}/application.yaml"
+- ansible.builtin.shell: which helm
+  register: helm_is_installed
+  ignore_errors: true
+- name: "Install Helm"
+  ansible.builtin.import_tasks:
+    file: install_helm.yaml
+  when: helm_is_installed.stdout == ""
+- name: "Configure ArgoCD"
+  ansible.builtin.import_tasks:
+    file: install_argo-cd.yaml
+- name: "Configure Longhorn"
+  ansible.builtin.import_tasks:
+    file: install_longhorn.yaml
+  when: longhorn
+- name: "Configure Cluster secrets"
+  ansible.builtin.import_tasks:
+    file: cluster_secrets.yaml
+- name: "Configure Cluster Infrastructure"
+  ansible.builtin.import_tasks:
+    file: install_cluster_infrastructure.yaml
 - name: "Cleanup"
   ansible.builtin.file:
     dest: "{{ manifest_directory }}"

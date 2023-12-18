@@ -2,7 +2,7 @@
   hosts:
     - localhost
   vars:
-    cluster_name: sandbox
+    cluster_name: cluster_name
   tasks:
     - name: "Create infrastructure"
       community.general.terraform:

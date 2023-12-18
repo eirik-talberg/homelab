@@ -1,5 +1,2 @@
 repo_url: https://github.com/eirik-talberg/homelab
 path: k8s/apps/cluster-infrastructure/
-argo_cd:
-  namespace: argocd
-  version: 2.7.2

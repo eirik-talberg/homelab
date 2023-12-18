@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: vault
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://helm.releases.hashicorp.com
+      chart: vault
+      targetRevision: v0.25.0
+      valuesObject:
+        server:
+          ingress:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.tls: "true"
+              cert-manager.io/cluster-issuer: taldevno
+            hosts:
+              - host: vault.sbx.taldev.no # Cluster name
+                paths:
+                  - /
+            tls:
+              - secretName: vault-tls-certificate
+                hosts:
+                  - "vault.sbx.taldev.no" # Cluster name
+          dataStorage:
+            storageClass: longhorn
+          auditStorage:
+            storageClass: longhorn
+  syncPolicy:
+    automated: { }
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: admissionregistration
+      kind: MutatingWebhookConfiguration
+      name: vault-agent-injector-cfg

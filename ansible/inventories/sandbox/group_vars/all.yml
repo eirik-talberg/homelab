@@ -16,7 +16,7 @@ apiserver_endpoint: "10.0.69.150"
 
 # k3s_token is required  masters can talk together securely
 # this token should be alpha numeric only
-k3s_token: "some-SUPER-DEDEUPER-secret-password"
+k3s_token: "{{ lookup('env', 'K3S_SANDBOX_TOKEN') }}"
 
 # The IP on which the node is reachable in the cluster.
 # Here, a sensible default is provided, you can still override
@@ -38,6 +38,7 @@ extra_server_args: >-
   --tls-san {{ apiserver_endpoint }}
   --disable servicelb
   --disable traefik
+  --write-kubeconfig-mode=644
 extra_agent_args: >-
   {{ extra_args }}
 
@@ -60,7 +61,7 @@ metal_lb_speaker_tag_version: "v0.13.9"
 metal_lb_controller_tag_version: "v0.13.9"
 
 # metallb ip range for load balancer
-metal_lb_ip_range: "10.0.69.155-10.0.69.159"
+metal_lb_ip_range: "10.0.69.200-10.0.69.209"
 
 # Only enable if your nodes are proxmox LXC nodes, make sure to configure your proxmox nodes
 # in your hosts.ini file.
@@ -82,3 +83,6 @@ proxmox_lxc_ct_ids:
   - 202
   - 203
   - 204
+
+
+## My own stuff
