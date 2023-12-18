@@ -1,0 +1,5 @@
+- name: "Download install script"
+  ansible.builtin.shell: curl -fsSL -o {{ manifest_directory }}/get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+- ansible.builtin.shell: chmod 700 {{ manifest_directory }}/get_helm.sh
+- name: "Install Helm"
+  ansible.builtin.shell: "{{ manifest_directory }}/get_helm.sh"

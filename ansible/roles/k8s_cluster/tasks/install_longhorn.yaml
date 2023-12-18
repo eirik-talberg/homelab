@@ -1,0 +1,27 @@
+- name: "Install jq"
+  ansible.builtin.apt:
+    name: jq
+    state: present
+  become: true
+  become_user: root
+- name: "Run environment check"
+  ansible.builtin.shell:
+    cmd: curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v1.5.1/scripts/environment_check.sh | bash
+  register: env_check
+- debug:
+    msg: "{{ env_check.stdout_lines }}"
+- name: Copy values-file to server
+  ansible.builtin.copy:
+    src: longhorn-values.yaml
+    dest: "{{ manifest_directory }}"
+- name: "Install Longhorn"
+  kubernetes.core.helm:
+    chart_ref: longhorn
+    chart_repo_url: "{{ apps.longhorn.chart_repo_url }}"
+    chart_version: "{{ apps.longhorn.chart_version }}"
+    create_namespace: true
+    release_namespace: longhorn
+    release_name: longhorn
+    values_files:
+      - "{{ manifest_directory }}/longhorn-values.yaml"
+

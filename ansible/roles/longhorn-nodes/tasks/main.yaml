@@ -1,0 +1,23 @@
+- name: Install required applications
+  ansible.builtin.apt:
+    pkg:
+      - nfs-common
+  become: true
+- name: "Check if multipathd config needs to be updated"
+  ansible.builtin.shell: grep -c "^blacklist" /etc/multipath.conf || true
+  register: found_lines
+- name: "Update multipath.d config"
+  ansible.builtin.lineinfile:
+    path: /etc/multipath.conf
+    line: |
+      blacklist {
+        devnode "^sd[a-z0-9]+"
+      }
+  when: found_lines.stdout == "0"
+  become: true
+- name: "Restart multipath service"
+  ansible.builtin.service:
+    name: multipathd
+    state: restarted
+  become: true
+  when: found_lines.stdout == "0"

@@ -1,0 +1,14 @@
+- name: Copy values-file to server
+  ansible.builtin.copy:
+    src: argo-cd-values.yaml
+    dest: "{{ manifest_directory }}"
+- name: "Install ArgoCD "
+  kubernetes.core.helm:
+    chart_ref: argo-cd
+    chart_repo_url: "{{ apps.argo_cd.chart_repo_url }}"
+    chart_version: "{{ apps.argo_cd.chart_version }}"
+    create_namespace: true
+    release_namespace: argocd
+    release_name: argo-cd
+    values_files:
+      - "{{ manifest_directory }}/argo-cd-values.yaml"
