@@ -1,0 +1,2 @@
+storage_pool: vm-storage
+token_secret_key: PM_API_TOKEN_SECRET_PROD

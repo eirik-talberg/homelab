@@ -1,4 +1,10 @@
 # This will probably get expanded with some state checking to allow it to run upgrades as well
+- name: "Wait for all nodes to be available"
+  hosts: k3s_cluster
+  gather_facts: false
+  tasks:
+    - name: "Wait 600 seconds for connections to come up"
+      ansible.builtin.wait_for_connection:
 - name: "Prepare for k3s install"
   hosts: k3s_cluster
   roles:

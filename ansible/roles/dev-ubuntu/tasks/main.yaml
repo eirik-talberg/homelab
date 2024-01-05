@@ -1,0 +1,5 @@
+- name: "Install virt tools"
+  ansible.builtin.apt:
+    name: libguestfs-tools
+    state: present
+  become: yes

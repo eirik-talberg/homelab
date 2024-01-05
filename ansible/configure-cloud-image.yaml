@@ -1,22 +1,27 @@
 - name: Download and configure Ubuntu cloud image
   hosts:
-    - ws-01
+    - ubuntu-dev
   run_once: true
   roles:
+    - common
+    - dev-ubuntu
     - ubuntu-cloud-image
-- name: Copy image to PVE
-  hosts:
-    - localhost
-  vars:
-    image_from: "{{ hostvars['ws-01']['ansible_user'] }}@{{ hostvars['ws-01']['ansible_host'] }}:{{ cloud_image_location }}"
-    image_to: "{{ hostvars['pve-01']['ansible_user'] }}@{{ hostvars['pve-01']['ansible_host'] }}:{{ cloud_image_location }}"
   tasks:
-    - name: Copy image
-      ansible.builtin.command:
-        cmd: scp {{ image_from }} {{ image_to }}
+    - ansible.builtin.fetch:
+        src: "{{ cloud_image_location }}"
+        dest: "{{ cloud_image_location }}"
+        flat: yes
+- name: "Upload cloud image"
+  hosts:
+    - "{{ pve_environment | default('pve-sbx') }}"
+  run_once: true
+  tasks:
+    - ansible.builtin.copy:
+        src: "{{ cloud_image_location }}"
+        dest: "{{ cloud_image_location }}"
 - name: Create PVE VM template
   hosts:
-    - pve-01
+    - "{{ pve_environment | default('pve-sbx') }}"
   run_once: true
   roles:
     - pve-vm-template

@@ -1,14 +1,14 @@
 terraform {
   required_providers {
     proxmox = {
-      source  = "Telmate/proxmox"
+      source  = "telmate/proxmox"
       version = "2.9.14"
     }
   }
 }
 
 provider "proxmox" {
-  pm_api_url = "https://${var.pve_node}.${var.domain}:8006/api2/json"
+  pm_api_url = "https://${var.pve_hostname}.${var.domain}/api2/json" # TODO CHANGE
 
   /** Uncomment for debugging
     pm_log_enable = true
@@ -29,7 +29,6 @@ resource "local_file" "cloud_init_user_data_file" {
     node_gecos       = var.node_gecos
     hostname         = each.key
     install_packages = var.install_packages
-    storage_disk     = each.value.storage_disk
     domain           = var.domain
   })
   filename = "/tmp/${each.key}.cfg"
@@ -40,7 +39,7 @@ resource "null_resource" "cloud_init_config_files" {
   connection {
     type        = "ssh"
     user        = var.pve_user
-    host        = "${var.pve_node}.${var.domain}"
+    host        = "${var.target_node}.${var.domain}"
     private_key = file(pathexpand("~/.ssh/id_rsa"))
   }
 
@@ -56,50 +55,20 @@ resource "proxmox_vm_qemu" "vms" {
     null_resource.cloud_init_config_files,
   ]
 
-  name        = each.key
-  target_node = var.target_node
-  vmid        = each.value.vm_id
-  clone       = var.template_name
-
-  qemu_os   = "l26"
-  agent     = 1
-  cores     = each.value.cores
-  sockets   = each.value.sockets
-  memory    = each.value.memory
-  scsihw    = "virtio-scsi-single"
-  os_type   = "cloud-init"
-  ipconfig0 = "gw=${var.gateway},ip=${var.subnet}.${each.value.vm_id}/16"
-  onboot = true
-
-  cicustom                = "user=local:snippets/${each.key}.yml"
+  //Common defaults
+  target_node             = var.target_node
+  os_type                 = "cloud-init"
+  scsihw                  = "virtio-scsi-single" //Not settable in template?
   cloudinit_cdrom_storage = var.storage_pool
+  cores                   = 0 //Ensures that we use the template value
+  memory                  = 0 //Ensures that we use the template value
 
-  # OS disk, sda
-  disk {
-    storage  = var.storage_pool
-    type     = each.value.os_disk.type
-    size     = each.value.os_disk.size
-    iothread = each.value.os_disk.io_thread
-    discard  = each.value.os_disk.discard
-    ssd      = each.value.os_disk.ssd
-  }
+  //Node specific values
+  name      = each.key
+  vmid      = each.value.vm_id
+  clone     = each.value.template
+  ipconfig0 = "gw=${var.gateway},ip=${var.subnet}.${each.value.vm_id}/16"
+  cicustom  = "user=local:snippets/${each.key}.yml"
 
-  # Mass storage, sdb
-  dynamic "disk" {
-    # This syntax is weird
-    for_each = each.value.storage_disk != null ? [1] : []
-    content {
-      storage  = var.storage_pool
-      type     = each.value.storage_disk.type
-      size     = each.value.storage_disk.size
-      iothread = each.value.storage_disk.io_thread
-      discard  = each.value.storage_disk.discard
-      ssd      = each.value.storage_disk.ssd
-    }
-  }
 
-  network {
-    model  = "virtio"
-    bridge = "vmbr0"
-  }
 }

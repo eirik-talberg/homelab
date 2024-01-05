@@ -1,5 +1,6 @@
-- name: "Configure PVE hosts"
+- name: Create PVE VM template
   hosts:
     - "{{ pve_environment | default('pve-sbx') }}"
+  run_once: true
   roles:
-    - proxmox
+    - pve-vm-template

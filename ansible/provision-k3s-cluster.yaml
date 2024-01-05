@@ -3,9 +3,14 @@
     - localhost
   vars:
     cluster_name: cluster_name
+    token_secret_key: token_secret_key
   tasks:
+    - debug:
+        msg: "{{ token_secret_key }}"
     - name: "Create infrastructure"
       community.general.terraform:
         project_path: ../k8s/clusters/{{ cluster_name }}
         init_reconfigure: true
         force_init: true
+      environment:
+        PM_API_TOKEN_SECRET: "{{ token_secret_key }}"

@@ -1,4 +1,17 @@
-vm_id: 9999
-memory: 2048
-storage_pool: local-btrfs
-template_name: ubuntu-2204-cloud-init
+templates:
+  - name: ubuntu-2204-small
+    cores: 2
+    memory: 2048
+    disk: 16
+    vm_id: 9001
+  - name: ubuntu-2204-medium
+    cores: 4
+    memory: 4096
+    disk: 32
+    vm_id: 9002
+  - name: ubuntu-2204-large
+    cores: 8
+    memory: 8192
+    disk: 64
+    vm_id: 9003
+template_params:

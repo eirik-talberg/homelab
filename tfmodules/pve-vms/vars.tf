@@ -72,23 +72,7 @@ variable "storage_pool" {
 
 variable "nodes" {
   type = map(object({
-    vm_id   = optional(number, 0)
-    cores   = optional(number, 1)
-    sockets = optional(number, 1)
-    memory  = optional(number, 512)
-    os_disk = object({
-      type      = optional(string, "scsi")
-      size      = optional(string, "16G")
-      io_thread = optional(number, 1)
-      ssd       = optional(number, 1)
-      discard   = optional(string, "on")
-    })
-    storage_disk = optional(object({
-      type      = optional(string, "scsi")
-      size      = optional(string, "16G")
-      io_thread = optional(number, 1)
-      ssd       = optional(number, 1)
-      discard   = optional(string, "on")
-    }), null)
+    vm_id    = optional(number, 0),
+    template = string
   }))
 }

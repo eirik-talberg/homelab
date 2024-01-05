@@ -1,6 +1,6 @@
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 kubeconfig: /home/{{ ansible_user }}/.kube/config
-longhorn: false
+longhorn: true
 cluster_name: operations
 cluster_short_name: ops
 cluster_tld: taldev.no

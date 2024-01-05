@@ -2,10 +2,11 @@
   ansible.builtin.shell:
     cmd: pveum role list --noborder 1 --noheader 1 | grep {{ role_name }}
   register: role_exists
+  ignore_errors: true
 - name: "Add new role for provisioning users"
   ansible.builtin.shell:
     cmd: pveum role add {{ role_name }}
-  when: not role_exists
+  when: role_exists.rc != 0
 - name: "Set privileges for role"
   ansible.builtin.shell:
     cmd: pveum role modify {{ role_name }} -privs "{{ privileges | join(' ')  }}"
@@ -13,10 +14,11 @@
   ansible.builtin.shell:
     cmd: pveum user list --noborder 1 --noheader 1 | grep {{ user_name }}
   register: user_exists
+  ignore_errors: true
 - name: "Add user"
   ansible.builtin.shell:
     cmd: pveum user add {{ user_name }}@pve --password {{ password }}
-  when: not user_exists
+  when: user_exists.rc != 0
 - name: "Add role to user"
   ansible.builtin.shell:
     cmd: pveum aclmod / -user {{ user_name }}@pve -role {{ role_name }}

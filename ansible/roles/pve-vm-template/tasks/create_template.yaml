@@ -1,0 +1,33 @@
+- name: "Delete old VM or template"
+  ansible.builtin.shell:
+    cmd: qm destroy {{ item.vm_id }}
+  ignore_errors: true
+- name: "Create VM for template"
+  ansible.builtin.shell:
+    cmd: |
+      qm create {{ item.vm_id }} \
+      --name {{ item.name }} \
+      --cpu cputype=host \
+      --cores {{ item.cores }} \
+      --memory {{ item.memory }} \
+      --net0 virtio,bridge=vmbr0 \
+      --scsihw virtio-scsi-single \
+      --agent enabled=1 \
+      --ostype l26 \
+      --onboot 1
+- name: "Import cloud image to VM"
+  ansible.builtin.shell:
+    cmd: |
+      qm set {{ item.vm_id }} --scsi0 {{ storage_pool }}:0,import-from={{ cloud_image_location }},iothread=1,ssd=1,discard=on
+- name: "Resize disk"
+  ansible.builtin.shell:
+    cmd: qm resize {{ item.vm_id }} scsi0 {{ item.disk }}G
+- name: "Set boot order for faster boot"
+  ansible.builtin.shell:
+    cmd: qm set {{ item.vm_id }} --boot order=scsi0
+- name: "Set VGA output"
+  ansible.builtin.shell:
+    cmd: qm set {{ item.vm_id }} --serial0 socket --vga serial0
+- name: "Create template from VM"
+  ansible.builtin.shell:
+    cmd: qm template {{ item.vm_id }}
