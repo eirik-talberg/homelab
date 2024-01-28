@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: media
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+      chart: plex-media-server
+      targetRevision: 0.1.8
+      helm:
+        valueFiles:
+          - $homelab/k8s/apps/sandbox/plex/values.yaml
+    - repoURL: https://github.com/eirik-talberg/homelab
+      targetRevision: HEAD
+      ref: homelab
+  syncPolicy:
+    automated: { }
+    syncOptions:
+      - CreateNamespace=true

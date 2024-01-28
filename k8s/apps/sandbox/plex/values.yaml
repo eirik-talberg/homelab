@@ -1,0 +1,30 @@
+ingress:
+  enabled: true
+  # note put a domain name that points to your ip address here
+  url: https://plex.sbx.taldev.no
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: taldevno
+service:
+  type: LoadBalancer
+pms:
+  configStorage: 10Gi
+  storageClassName: longhorn
+extraVolumes:
+  - name: tv
+    nfs:
+      server: nas-01.taldev.no
+      path: /mnt/user/video-test/Serier
+      readOnly: true
+  - name: movies
+    nfs:
+      server: nas-01.taldev.no
+      path: /mnt/user/video-test/Filmer
+      readOnly: true
+extraVolumeMounts:
+  - name: tv
+    mountPath: /tv
+  - name: movies
+    mountPath: /movies
