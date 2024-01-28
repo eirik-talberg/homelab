@@ -1,0 +1,44 @@
+ingress:
+  enabled: true
+  # note put a domain name that points to your ip address here
+  url: https://plex.taldev.no
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: taldevno
+pms:
+  configStorage: 16Gi
+  storageClassName: longhorn
+extraVolumes:
+  - name: tv
+    nfs:
+      server: nas-01.taldev.no
+      path: /mnt/user/Video/Serier
+      readOnly: true
+  - name: movies
+    nfs:
+      server: nas-01.taldev.no
+      path: /mnt/user/Video/Filmer
+      readOnly: true
+extraVolumeMounts:
+  - name: tv
+    mountPath: /tv
+  - name: movies
+    mountPath: /movies
+initContainer:
+  script: |-
+    #!/bin/sh
+    echo "fetching pre-existing pms database to import..."
+    
+    if [ -d "/config/Library" ]; then
+      echo "PMS library already exists, exiting."
+      exit 0
+    fi
+    
+    apk --no-cache add curl
+    curl https://files.taldev.no/pms.tgz -o pms.tgz
+    tar -xvzf pms.tgz -C /config
+    rm pms.tgz
+    
+    echo "Done."
