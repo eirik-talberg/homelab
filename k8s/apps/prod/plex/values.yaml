@@ -10,6 +10,8 @@ ingress:
 pms:
   configStorage: 16Gi
   storageClassName: longhorn
+service:
+  type: LoadBalancer
 extraVolumes:
   - name: tv
     nfs:
