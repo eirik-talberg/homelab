@@ -16,7 +16,7 @@ spec:
       targetRevision: 0.1.8
       helm:
         valueFiles:
-          - $homelab/k8s/apps/sandbox/plex/values.yaml
+          - $homelab/k8s/apps/prod/plex/values.yaml
     - repoURL: https://github.com/eirik-talberg/homelab
       targetRevision: HEAD
       ref: homelab
