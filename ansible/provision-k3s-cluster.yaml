@@ -12,5 +12,6 @@
         project_path: ../k8s/clusters/{{ cluster_name }}
         init_reconfigure: true
         force_init: true
+        parallelism: 3
       environment:
         PM_API_TOKEN_SECRET: "{{ token_secret_key }}"

@@ -1,0 +1,4 @@
+- name: "Download image from Turnkey Linux"
+  ansible.builtin.get_url:
+    url: http://mirror.turnkeylinux.org/turnkeylinux/images/iso/turnkey-postgresql-17.1-bullseye-amd64.iso
+    dest: /var/lib/vz/template/iso/

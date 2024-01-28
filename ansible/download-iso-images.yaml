@@ -1,0 +1,5 @@
+- name: "Download ISO images to PVE nodes"
+  hosts:
+    - "{{ pve_environment | default('pve-sbx') }}"
+  roles:
+    - turnkey-psql
