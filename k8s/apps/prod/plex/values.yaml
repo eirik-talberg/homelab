@@ -1,7 +1,7 @@
 ingress:
   enabled: true
   # note put a domain name that points to your ip address here
-  url: https://plex.taldev.no
+  url: https://plex.prod.taldev.no
   ingressClassName: traefik
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -10,8 +10,6 @@ ingress:
 pms:
   configStorage: 16Gi
   storageClassName: longhorn
-service:
-  type: LoadBalancer
 extraVolumes:
   - name: tv
     nfs:
