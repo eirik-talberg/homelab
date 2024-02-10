@@ -17,7 +17,7 @@ spec:
       helm:
         valueFiles:
           - values.yaml
-          - $homelab/k8s/apps/sandbox/sonarr/values.yaml
+          - $homelab/k8s/apps/prod/sonarr/values.yaml
     - repoURL: https://github.com/eirik-talberg/homelab
       targetRevision: HEAD
       ref: homelab
