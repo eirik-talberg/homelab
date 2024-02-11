@@ -13,7 +13,7 @@ persistence:
     enabled: true
     type: nfs
     server: "nas-01.taldev.no"
-    path: "/mnt/user/Video/Serier"
+    path: "/mnt/user/Video"
 ingress:
   main:
     enabled: true
