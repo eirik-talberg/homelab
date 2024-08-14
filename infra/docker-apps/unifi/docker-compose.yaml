@@ -5,8 +5,8 @@ services:
     env_file:
       - unifi.env
     volumes:
-      - data/mongodb/db:/data/db
-      - boot/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+      - ./data/mongodb/db:/data/db
+      - ./boot/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
     restart: unless-stopped
   unifi-network-application:
     image: lscr.io/linuxserver/unifi-network-application:latest
@@ -21,7 +21,7 @@ services:
       - MEM_STARTUP=1024 #optional
       - MONGO_TLS= #optional
     volumes:
-      - data/unifi:/config
+      - ./data/unifi:/config
     ports:
       - 8443:8443
       - 3478:3478/udp
