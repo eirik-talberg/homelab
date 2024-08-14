@@ -8,6 +8,8 @@ services:
       - ./data/mongodb/db:/data/db
       - ./boot/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
     restart: unless-stopped
+    ports:
+      - 27017:27017
   unifi-network-application:
     image: lscr.io/linuxserver/unifi-network-application:latest
     container_name: unifi-network-application
