@@ -2,3 +2,8 @@ common:
   cluster: https://kubernetes.default.svc
 vault_secrets_operator:
   version: v0.9.0
+  hcp:
+    organization_id: 3050c5b6-ddcf-43d3-b260-9555f249a40a
+    project_id: 320c9a8d-83a9-4d69-8d6f-cc5174d8bf48
+    secretRef: hcp-service-principal-credentials
+    app_name: cluster-infra-core
