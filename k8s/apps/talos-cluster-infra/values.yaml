@@ -1,4 +1,4 @@
 common:
   cluster: https://kubernetes.default.svc
-vault-secrets-operator:
+vault_secrets_operator:
   version: v0.9.0
