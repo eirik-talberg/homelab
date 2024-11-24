@@ -16,3 +16,18 @@ spec:
       targetRevision: {{ .Values.metallb.version }}
   syncPolicy:
     automated: { }
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: basic-pool
+  namespace: cluster-infra
+spec:
+  addresses:
+    - {{ .Values.metallb.ip_range }}
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2-advertisement
+  namespace: cluster-infra

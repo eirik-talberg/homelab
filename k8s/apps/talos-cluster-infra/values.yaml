@@ -9,3 +9,4 @@ vault_secrets_operator:
     app_name: cluster-infra-core
 metallb:
   version: v0.14.8
+  ip_range: 10.0.69.230-10.0.69.239
