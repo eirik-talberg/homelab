@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: cert-manager
+    server: {{ .Values.common.cluster }}
+  project: default
+  sources:
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: {{ .Values.cert_manager.version }}
+      helm:
+        valuesObject: {{ .Values.cert_manager.values | toYaml | nindent 10 }}
+    - repoURL: https://github.com/eirik-talberg/cert-manager-webhook-domeneshop
+      path: deploy/domeneshop-webhook
+      targetRevision: {{ .Values.cert_manager.webhook_domeneshop.version }}
+      helm:
+        valuesObject: {{ .Values.cert_manager.webhook_domeneshop.values | toYaml | nindent 10 }}
+  syncPolicy:
+    automated: { }

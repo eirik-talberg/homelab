@@ -1,3 +1,4 @@
+{{- if .Values.metallb.enabled -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -22,6 +23,9 @@ kind: IPAddressPool
 metadata:
   name: basic-pool
   namespace: cluster-infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   addresses:
     - {{ .Values.metallb.ip_range }}
@@ -31,3 +35,7 @@ kind: L2Advertisement
 metadata:
   name: l2-advertisement
   namespace: cluster-infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+{{- end -}}

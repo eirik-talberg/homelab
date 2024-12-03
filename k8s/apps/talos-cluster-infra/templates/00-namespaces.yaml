@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: metalllb
+  labels:
+    name: cluster-infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vault-secrets-operator
+  labels:
+    name: cluster-infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+  labels:
+    name: cluster-infra
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
