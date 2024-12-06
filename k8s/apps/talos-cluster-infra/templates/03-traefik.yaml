@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: traefik
+    server: {{ .Values.spec.destination.server }}
+  project: default
+  sources:
+    - repoURL: https://traefik.github.io/charts
+      chart: traefik
+      targetRevision: {{ .Values.traefik.version }}
+  syncPolicy:
+    automated: { }
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-server-certificate
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  dnsNames:
+    - "{{ .Values.argocd.ingress.host }}"
+  issuerRef:
+    name: "{{ .Values.cert_manager.issuers.acme.taldev_no.prod.name }}"
+    kind: ClusterIssuer
+  secretName: "{{ .Values.argocd.ingress.certificate }}"
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.argocd.ingress.host }}`)
+      priority: 10
+      services:
+        - name: "{{ .Values.argocd.ingress.service_name }}"
+          port: "{{ .Values.argocd.ingress.port_name }}"
+    - kind: Rule
+      match: Host(`{{ .Values.argocd.ingress.host }}`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: "{{ .Values.argocd.ingress.service_name }}"
+          port: "{{ .Values.argocd.ingress.port_name }}"
+          scheme: h2c
+  tls:
+    secretName: "{{ .Values.argocd.ingress.certificate }}"

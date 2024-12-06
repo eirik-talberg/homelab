@@ -32,3 +32,9 @@ cert_manager:
           secret: cluster-infra-core-secrets
           api_token_ref: domeneshop_token
           api_secret_ref: domeneshop_secret
+argocd:
+  ingress:
+    host: "argocd.taldev.no"
+    service_name: argo-cd-argocd-server
+    port_name: http
+    certificate: argocd-server-tls-certificate
