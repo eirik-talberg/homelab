@@ -32,9 +32,11 @@ cert_manager:
           secret: cluster-infra-core-secrets
           api_token_ref: domeneshop_token
           api_secret_ref: domeneshop_secret
+traefik:
+  version: 33.1.0
 argocd:
   ingress:
-    host: "argocd.taldev.no"
+    host: "argocd.k8s-tls-dev.taldev.no"
     service_name: argo-cd-argocd-server
     port_name: http
     certificate: argocd-server-tls-certificate
