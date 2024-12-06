@@ -27,7 +27,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{ .Values.cert_manager.issuers.acme.taldev_no.prod.name }}
+  name: {{ .Values.cert_manager.issuers.acme.taldev_no.name }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # To prevent error messages due to CRDs not yet being registered in the cluster upon apply (cert-manager CRDs that are installed in the same package)
     argocd.argoproj.io/sync-wave: "1"
