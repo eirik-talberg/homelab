@@ -19,13 +19,28 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: HCPVaultSecretsApp
+metadata:
+  name: {{ .Values.vault_secrets_operator.hcp.app_name }}
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  appName: {{ .Values.vault_secrets_operator.hcp.app_name }}
+  hcpAuthRef: hcp-auth-{{ .Values.vault_secrets_operator.hcp.app_name }}
+  destination:
+    create: true
+    name: cluster-infra-core-secrets
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: argocd-server-certificate
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   dnsNames:
@@ -41,7 +56,7 @@ metadata:
   name: argocd-server
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   entryPoints:
