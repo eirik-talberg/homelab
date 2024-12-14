@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: cert-manager
+    namespace: {{ .Values.common.namespace }}
     server: {{ .Values.common.cluster }}
   project: default
   sources:

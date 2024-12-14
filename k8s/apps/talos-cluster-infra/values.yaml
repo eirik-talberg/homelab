@@ -1,5 +1,6 @@
 common:
   cluster: https://kubernetes.default.svc
+  namespace: cluster-infra
 vault_secrets_operator:
   version: v0.9.0
   hcp:

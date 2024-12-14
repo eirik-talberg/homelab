@@ -8,7 +8,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: cluster-infra
+    namespace: {{ .Values.common.namespace }}
     server: {{ .Values.common.cluster }}
   project: default
   sources:
@@ -22,7 +22,7 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: basic-pool
-  namespace: cluster-infra
+  namespace: {{ .Values.common.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
@@ -34,7 +34,7 @@ apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: l2-advertisement
-  namespace: cluster-infra
+  namespace: {{ .Values.common.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
