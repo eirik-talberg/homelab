@@ -19,6 +19,8 @@ cert_manager:
   webhook_domeneshop:
     version: c2fe09d
     values:
+      certManager:
+        namespace: cluster-infra
       groupName: taldev.no
       supportClusterIssuer: true
   issuers:
