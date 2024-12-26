@@ -12,6 +12,9 @@ metallb:
   enabled: true
   version: v0.14.8
   ip_range: 10.0.69.230-10.0.69.239
+  values:
+    speaker:
+      ignoreExcludeLB: true
 cert_manager:
   version: 1.16.1
   values:
