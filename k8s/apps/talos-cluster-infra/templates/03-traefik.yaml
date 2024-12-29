@@ -54,7 +54,7 @@ spec:
         - name: "{{ .Values.argocd.ingress.service_name }}"
           port: "{{ .Values.argocd.ingress.port_name }}"
     - kind: Rule
-      match: Host(`{{ .Values.argocd.ingress.host }}`) && Headers(`Content-Type`, `application/grpc`)
+      match: Host(`{{ .Values.argocd.ingress.host }}`) && Header(`Content-Type`, `application/grpc`)
       priority: 11
       services:
         - name: "{{ .Values.argocd.ingress.service_name }}"
