@@ -8,13 +8,6 @@ vault_secrets_operator:
     project_id: 320c9a8d-83a9-4d69-8d6f-cc5174d8bf48
     secretRef: hcp-service-principal-credentials
     app_name: cluster-infra-core
-metallb:
-  enabled: true
-  version: v0.14.8
-  ip_range: 10.0.69.230-10.0.69.239
-  values:
-    speaker:
-      ignoreExcludeLB: true
 cert_manager:
   version: 1.16.1
   values:
@@ -42,7 +35,7 @@ traefik:
   version: 33.1.0
 argocd:
   ingress:
-    host: "argocd.k8s-tls-dev.taldev.no"
+    host: "argocd.dev-tls-02.taldev.no"
     service_name: argo-cd-argocd-server
     port_name: http
     certificate: argocd-server-tls-certificate
