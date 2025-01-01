@@ -1,0 +1,8 @@
+- name: "Configure Talos Kubernetes"
+  hosts:
+    - localhost
+  vars:
+    ansible_connection: local
+    kube_config: ""
+  roles:
+    - talos-cloud-infra

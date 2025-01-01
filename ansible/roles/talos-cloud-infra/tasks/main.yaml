@@ -1,0 +1,14 @@
+- set_fact:
+    manifest_directory: /tmp/k8s
+- ansible.builtin.file:
+    path: "{{ manifest_directory }}"
+    state: directory
+- name: "Render Application template"
+  ansible.builtin.template:
+    src: templates/application.yaml.j2
+    dest: "{{ manifest_directory }}/application.yaml"
+- name: "Deploiy Application"
+  kubernetes.core.k8s:
+    src: "{{ manifest_directory }}/application.yaml"
+    state: present
+    kubeconfig: "{{ kube_config }}"

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radarr
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: media
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://eirik-talberg.github.io/helm-charts/
+      chart: radarr
+      targetRevision: 0.1.0
+      helm:
+        valueFiles:
+          - values.yaml
+          - $homelab/k8s/apps/prod/radarr/values.yaml
+    - repoURL: https://github.com/eirik-talberg/homelab
+      targetRevision: HEAD
+      ref: homelab
+  syncPolicy:
+    automated: { }
+    syncOptions:
+      - CreateNamespace=true

@@ -1,16 +1,15 @@
-[tool.poetry]
+[project]
 name = "homelab"
 version = "0.1.0"
-description = ""
-authors = ["Eirik W. Talberg <eirik@taldev.no>"]
+description = "Default template for PDM package"
+authors = [
+    {name = "Eirik W. Talberg", email = "eirik@taldev.no"},
+]
+dependencies = ["ansible>=11.1.0", "kubernetes>=31.0.0", "jsonpatch>=1.33", "pyyaml>=6.0.2"]
+requires-python = "==3.13.*"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-ansible = "^8.2.0"
-netaddr = ">=0.8.0"
+license = {text = "MIT"}
 
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.pdm]
+distribution = false

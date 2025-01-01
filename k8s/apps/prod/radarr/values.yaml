@@ -1,0 +1,35 @@
+controllers:
+  main:
+    env:
+      containers:
+        main:
+          env:
+            TZ: Europe/Oslo
+persistence:
+  config:
+    enabled: true
+    storageClass: longhorn
+  media:
+    enabled: true
+    type: nfs
+    server: "nas-01.taldev.no"
+    path: "/mnt/user/Video"
+ingress:
+  main:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      cert-manager.io/cluster-issuer: taldevno
+    hosts:
+      - host: "radarr.prod.taldev.no"
+        paths:
+          - path: /
+            service:
+              name: radarr
+              port: 7878
+    tls:
+      - secretName: radarr-service-cert
+        hosts:
+          - "radarr.prod.taldev.no"

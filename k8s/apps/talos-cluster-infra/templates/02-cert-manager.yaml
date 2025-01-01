@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: {{ .Values.common.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ .Values.common.namespace }}
+    server: {{ .Values.common.cluster }}
+  project: default
+  sources:
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: {{ .Values.cert_manager.version }}
+      helm:
+        valuesObject: {{ .Values.cert_manager.values | toYaml | nindent 10 }}
+    - repoURL: https://github.com/eirik-talberg/cert-manager-webhook-domeneshop
+      path: deploy/domeneshop-webhook
+      targetRevision: {{ .Values.cert_manager.webhook_domeneshop.version }}
+      helm:
+        valuesObject: {{ .Values.cert_manager.webhook_domeneshop.values | toYaml | nindent 10 }}
+  syncPolicy:
+    automated: { }
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.cert_manager.issuers.acme.taldev_no.name }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # To prevent error messages due to CRDs not yet being registered in the cluster upon apply (cert-manager CRDs that are installed in the same package)
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    email: {{ .Values.cert_manager.issuers.acme.taldev_no.email }}
+    server: {{ .Values.cert_manager.issuers.acme.taldev_no.server }}
+    privateKeySecretRef:
+      name: {{ .Values.cert_manager.issuers.acme.taldev_no.secretName }}
+    solvers:
+      - dns01:
+          webhook:
+            groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.groupName }}
+            solverName: domeneshop
+            config: # TODO: Create these with ESO
+              APITokenSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.api_token_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.secret }}
+              APISecretSecretRef:
+                key: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.api_secret_ref }}
+                name: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.secret }}

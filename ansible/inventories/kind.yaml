@@ -1,0 +1,11 @@
+all:
+  vars:
+    k8s:
+      cluster_infra:
+        argo_cd_namespace: argo-cd
+        destination_namespace: cluster-infra
+        destination_cluster: https://kubernetes.default.svc
+        target_revision: feat/talos_cluster_infra
+        values_object:
+          metallb:
+            enabled: false

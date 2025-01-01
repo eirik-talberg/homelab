@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-infrastructure
+  namespace: {{ argo_cd_namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ destination_namespace }}
+    server: {{ destination_cluster }}
+  project: default
+  sources:
+    - repoURL: "{{ repo_url }}"
+      path: "{{ path }}"
+      targetRevision: "{{ target_revision }}"
+      helm:
+        valuesObject:
+          {{ values_object | to_nice_yaml | indent(8) }}
+  syncPolicy:
+    automated: { }

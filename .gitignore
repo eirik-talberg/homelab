@@ -9,3 +9,6 @@ tfplan
 **/infra/files/*.cfg
 config.py
 ansible/k3s-ansible
+.DS_Store
+.tfplan
+.pdm-python

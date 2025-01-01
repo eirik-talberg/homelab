@@ -1,0 +1,9 @@
+repo_url: https://github.com/eirik-talberg/homelab
+path: k8s/apps/talos-cluster-infra
+argo_cd_namespace: cluster-infra
+destination_namespace: cluster-infra
+destination_cluster: https://kubernetes.default.svc
+target_revision: HEAD
+values_object:
+  metallb:
+    enabled: true

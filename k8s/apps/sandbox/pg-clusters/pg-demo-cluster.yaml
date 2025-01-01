@@ -1,0 +1,18 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: pg-demo-minimal-cluster
+  namespace: default
+spec:
+  teamId: "acid"
+  volume:
+    size: 1Gi
+  numberOfInstances: 2
+  users:
+    taldev:
+      - superuser
+      - createdb
+  databases:
+    demo-db: taldev  # dbname: owner
+  postgresql:
+    version: "15"

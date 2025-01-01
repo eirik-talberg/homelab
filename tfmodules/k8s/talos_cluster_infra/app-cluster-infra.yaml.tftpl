@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-infra
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    managed-by: terraform
+spec:
+  destination:
+    namespace: cluster-infra
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://github.com/eirik-talberg/homelab
+      path: k8s/apps/talos-cluster-infra/
+      targetRevision: ${target_revision}
+  syncPolicy:
+    automated: {}
