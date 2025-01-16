@@ -12,8 +12,8 @@ spec:
     server: {{ .Values.common.cluster }}
   project: default
   sources:
-    - repoURL: https://github.com/sergelogvinov/proxmox-csi-plugin
-      path: charts/proxmox-csi-plugin
+    - repoURL: ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
+      chart: proxmox-csi-plugin
       targetRevision: {{ .Values.proxmox_csi_driver.version }}
     helm:
       valuesObject: {{ .Values.proxmox_csi_driver.values | toYaml | nindent 10 }}
