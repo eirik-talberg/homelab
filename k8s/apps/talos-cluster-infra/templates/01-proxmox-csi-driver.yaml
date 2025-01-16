@@ -19,4 +19,4 @@ spec:
       valuesObject: {{ .Values.proxmox_csi_driver.values | toYaml | nindent 10 }}
   syncPolicy:
     automated: { }
-{{-- end -}}
+{{- end -}}
