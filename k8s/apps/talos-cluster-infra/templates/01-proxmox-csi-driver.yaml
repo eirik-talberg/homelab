@@ -1,0 +1,22 @@
+{{- if .Values.proxmox_csi_driver.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: proxmox-csi-driver
+  namespace: {{ .Values.common.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ .Values.common.namespace }}
+    server: {{ .Values.common.cluster }}
+  project: default
+  sources:
+    - repoURL: https://github.com/sergelogvinov/proxmox-csi-plugin
+      path: charts/proxmox-csi-plugin
+      targetRevision: {{ .Values.proxmox_csi_driver.version }}
+    helm:
+      valuesObject: {{ .Values.proxmox_csi_driver.values | toYaml | nindent 10 }}
+  syncPolicy:
+    automated: { }
+{{-- end -}}
