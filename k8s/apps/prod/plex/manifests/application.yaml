@@ -13,7 +13,7 @@ spec:
   sources:
     - repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
       chart: plex-media-server
-      targetRevision: 0.1.8
+      targetRevision: 0.8.0
       helm:
         valueFiles:
           - $homelab/k8s/apps/prod/plex/values.yaml
@@ -21,6 +21,6 @@ spec:
       targetRevision: HEAD
       ref: homelab
   syncPolicy:
-    automated: { }
+    automated: {}
     syncOptions:
       - CreateNamespace=true
