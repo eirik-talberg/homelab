@@ -3,7 +3,7 @@ ingress:
 service:
   type: LoadBalancer
 pms:
-  configStorage: 32Gi
+  configStorage: 16Gi
   storageClassName: longhorn
 extraVolumes:
   - name: tv
