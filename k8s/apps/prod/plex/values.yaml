@@ -16,24 +16,31 @@ extraVolumes:
       server: nas-01.taldev.no
       path: /mnt/user/Video/Filmer
       readOnly: true
+  - name: backup
+    nfs:
+      server: nas-01.taldev.no
+      path: /mnt/user/Backup
+      readOnly: false
 extraVolumeMounts:
   - name: tv
     mountPath: /tv
   - name: movies
     mountPath: /movies
+  - name: backup
+    mountPath: /backup
 initContainer:
   script: |-
     #!/bin/sh
     echo "fetching pre-existing pms database to import..."
-    
+
     if [ -d "/config/Library" ]; then
       echo "PMS library already exists, exiting."
       exit 0
     fi
-    
+
     apk --no-cache add curl
     curl https://files.taldev.no/pms.tgz -o pms.tgz
     tar -xvzf pms.tgz -C /config
     rm pms.tgz
-    
+
     echo "Done."
