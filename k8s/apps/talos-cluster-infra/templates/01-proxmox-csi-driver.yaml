@@ -15,8 +15,8 @@ spec:
     - repoURL: ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
       chart: proxmox-csi-plugin
       targetRevision: {{ .Values.proxmox_csi_driver.version }}
-    helm:
-      valuesObject: {{ .Values.proxmox_csi_driver.values | toYaml | nindent 10 }}
+      helm:
+        valuesObject: {{ .Values.proxmox_csi_driver.values | toYaml | nindent 10 }}
   syncPolicy:
     automated: { }
 {{- end -}}
