@@ -12,7 +12,7 @@ spec:
     server: {{ .Values.common.cluster }}
   project: default
   sources:
-    - repoURL: ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
+    - repoURL: ghcr.io/sergelogvinov/charts
       chart: proxmox-csi-plugin
       targetRevision: {{ .Values.proxmox_csi_driver.version }}
       helm:
