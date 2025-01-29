@@ -6,10 +6,6 @@ variable "hcp_project_id" {
   type = string
 }
 
-variable "hcp_service_principal" {
-  type = string
-}
-
 variable "kubeconfig_folder" {
   type = string
 }
@@ -19,7 +15,8 @@ variable "cluster_name" {
 }
 
 variable "argocd_namespace" {
-  type = string
+  type    = string
+  default = "cluster-infra"
 }
 
 variable "pve_url" {
@@ -30,4 +27,9 @@ variable "pve_url" {
 variable "pve_cluster_name" {
   type    = string
   default = "taldev-01"
+}
+
+variable "pve_csi_user_id" {
+  type    = string
+  default = "kubernetes-csi@pve"
 }

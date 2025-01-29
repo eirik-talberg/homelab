@@ -8,7 +8,7 @@ resource "helm_release" "argo_cd" {
   create_namespace = "true"
   values = [
     yamlencode({
-      config = {
+      configs = {
         params = {
           "server.insecure" = true
         }
@@ -29,7 +29,7 @@ resource "kubernetes_namespace" "cluster_infra" {
 data "hcp_organization" "taldev" {}
 
 data "hcp_project" "homelab" {
-  project = "320c9a8d-83a9-4d69-8d6f-cc5174d8bf48"
+  project = var.hcp_project_id
 }
 
 resource "hcp_service_principal" "service_principal" {
@@ -58,7 +58,7 @@ data "hcp_vault_secrets_secret" "letsencrypt_account_key" {
 resource "kubernetes_secret" "letsencrypt_account_key" {
   metadata {
     name      = "letsencrypt-account-key"
-    namespace = "cluster-infra"
+    namespace = var.argocd_namespace
   }
   depends_on = [
     kubernetes_namespace.cluster_infra
@@ -72,7 +72,7 @@ resource "kubernetes_secret" "letsencrypt_account_key" {
 resource "kubernetes_secret" "hcp_service_principal_credentials" {
   metadata {
     name      = "hcp-service-principal-credentials"
-    namespace = "cluster-infra"
+    namespace = var.argocd_namespace
   }
   depends_on = [
     kubernetes_namespace.cluster_infra
@@ -84,7 +84,7 @@ resource "kubernetes_secret" "hcp_service_principal_credentials" {
 }
 
 data "proxmox_virtual_environment_user" "csi_token_user" {
-  user_id = "kubernetes-csi@pve"
+  user_id = var.pve_csi_user_id
 }
 
 resource "proxmox_virtual_environment_user_token" "csi_token" {
@@ -94,6 +94,18 @@ resource "proxmox_virtual_environment_user_token" "csi_token" {
   user_id               = data.proxmox_virtual_environment_user.csi_token_user.user_id
   privileges_separation = false
 }
+
+
+resource "kubernetes_namespace" "csi_proxmox" {
+  metadata {
+    name = "csi-proxmox"
+    labels = {
+      managed-by                           = "terraform"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+    }
+  }
+}
+
 
 resource "kubernetes_secret" "proxmox_csi_config" {
   metadata {
@@ -107,7 +119,7 @@ resource "kubernetes_secret" "proxmox_csi_config" {
       pve_url          = "${var.pve_url}/api2/json"
       token_id         = proxmox_virtual_environment_user_token.csi_token.id
       token_secret     = split("=", proxmox_virtual_environment_user_token.csi_token.value).1
-      pve_cluster_name = "taldev-01"
+      pve_cluster_name = var.pve_cluster_name
     })
   }
 }
