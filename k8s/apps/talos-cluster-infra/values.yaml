@@ -4,6 +4,7 @@ common:
 proxmox_csi_driver:
   enabled: true
   version: 0.3.2
+  namespace: csi-proxmox
   values:
     storageClass:
       - name: proxmox-data-ext4

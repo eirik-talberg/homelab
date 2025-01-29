@@ -8,7 +8,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: {{ .Values.common.namespace }}
+    namespace: {{ .Values.proxmox_csi_driver.namespace }}
     server: {{ .Values.common.cluster }}
   project: default
   sources:

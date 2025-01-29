@@ -42,7 +42,7 @@ spec:
           webhook:
             groupName: {{ .Values.cert_manager.issuers.acme.taldev_no.groupName }}
             solverName: domeneshop
-            config: # TODO: Create these with ESO
+            config:
               APITokenSecretRef:
                 key: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.api_token_ref }}
                 name: {{ .Values.cert_manager.issuers.acme.taldev_no.credentials.secret }}
