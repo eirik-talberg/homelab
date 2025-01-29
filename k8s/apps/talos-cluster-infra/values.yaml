@@ -1,6 +1,19 @@
 common:
   cluster: https://kubernetes.default.svc
   namespace: cluster-infra
+proxmox_csi_driver:
+  enabled: true
+  version: 0.3.2
+  namespace: csi-proxmox
+  values:
+    storageClass:
+      - name: proxmox-data-ext4
+        storage: vm-storage
+        reclaimPolicy: Delete
+        fstype: ext4
+        cache: none
+        ssd: true
+    existingConfigSecret: "proxmox-csi-plugin"
 vault_secrets_operator:
   version: v0.9.0
   hcp:

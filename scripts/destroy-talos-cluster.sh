@@ -25,4 +25,5 @@ ROOT_MODULE=$(pwd)/infra/k8s/talos
 VARS_DIR=$(pwd)/environments/$ENVIRONMENT/k8s/$CLUSTER_NAME/infra
 
 export TF_WORKSPACE="$TF_WORKSPACE-cluster"
+terraform -chdir=$ROOT_MODULE init
 terraform -chdir=$ROOT_MODULE destroy -var-file=$VARS_DIR/cluster.tfvars
