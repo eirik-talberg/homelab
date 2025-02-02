@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: {{ .Values.common.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ .Values.monitoring.namespace }}
+    server: {{ .Values.common.cluster }}
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: prometheus-community/kube-prometheus-stack
+      targetRevision: {{ .Values.kube_prometheus_stack.version }}
+  syncPolicy:
+    automated: { }
+    syncOptions:
+      - CreateNamespace=true

@@ -52,3 +52,7 @@ argocd:
     service_name: argo-cd-argocd-server
     port_name: http
     certificate: argocd-server-tls-certificate
+monitoring:
+  namespace: monitoring
+  kube_prometheus_stack:
+    version: 68.4.4
