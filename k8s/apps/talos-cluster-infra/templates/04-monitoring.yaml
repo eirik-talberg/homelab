@@ -12,7 +12,7 @@ spec:
   project: default
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-community/kube-prometheus-stack
+      chart: kube-prometheus-stack
       targetRevision: {{ .Values.monitoring.kube_prometheus_stack.version }}
   syncPolicy:
     automated: { }
