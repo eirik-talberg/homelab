@@ -5,7 +5,7 @@ locals {
 module "controllers" {
   source    = "../../pve/vm"
   count     = var.controllers.count
-  name      = "tls-${var.cluster_label}-ctr-${format("%02s", count.index + 1)}"
+  name      = "${var.cluster_label}-ctr-${format("%02s", count.index + 1)}"
   cpu_cores = var.controllers.cpu_cores
   memory    = var.controllers.memory
   disk_size = var.controllers.disk_size
@@ -16,7 +16,7 @@ module "controllers" {
 module "workers" {
   source    = "../../pve/vm"
   count     = var.workers.count
-  name      = "tls-${var.cluster_label}-wrk-${format("%02s", count.index + 1)}"
+  name      = "${var.cluster_label}-wrk-${format("%02s", count.index + 1)}"
   cpu_cores = var.workers.cpu_cores
   memory    = var.workers.memory
   disk_size = var.workers.disk_size
@@ -38,7 +38,7 @@ locals {
     }
   }
   cluster_endpoint = "https://${module.controllers.0.ipv4_address}:6443"
-  cluster_name     = "tls-${var.cluster_label}"
+  cluster_name     = var.cluster_label
 }
 
 resource "talos_machine_secrets" "this" {
@@ -157,11 +157,6 @@ resource "talos_cluster_kubeconfig" "this" {
 resource "local_file" "talos_config" {
   filename = "${pathexpand(var.talos_config_location)}/${var.cluster_label}"
   content  = data.talos_client_configuration.this.talos_config
-}
-
-resource "local_file" "machine" {
-  filename = "machine.yaml"
-  content  = data.talos_machine_configuration.controller.machine_configuration
 }
 
 resource "local_file" "kubeconfig" {

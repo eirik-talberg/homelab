@@ -48,7 +48,7 @@ traefik:
   version: 33.1.0
 argocd:
   ingress:
-    host: "argocd.dev-tls-02.taldev.no"
+    host: "argocd.dev-tls-01.taldev.no"
     service_name: argo-cd-argocd-server
     port_name: http
     certificate: argocd-server-tls-certificate

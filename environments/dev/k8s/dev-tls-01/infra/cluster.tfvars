@@ -1,4 +1,4 @@
-cluster_label     = "dev-01"
+cluster_label     = "dev-tls-01"
 talos_version     = "1.9.1"
 kubeconfig_folder = "~/.kube"
 controllers = {
@@ -8,7 +8,7 @@ controllers = {
   disk_size = 32
 }
 workers = {
-  count     = 1
+  count     = 3
   cpu_cores = 4
   memory    = 4096
   disk_size = 32

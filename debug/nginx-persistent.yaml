@@ -33,7 +33,7 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: pvc
-              mountPath: /mnt
+              mountPath: /usr/share/nginx/html/test
       volumes:
         - name: pvc
           persistentVolumeClaim:

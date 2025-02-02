@@ -10,5 +10,5 @@ tfplan
 config.py
 ansible/k3s-ansible
 .DS_Store
-.tfplan
+*.tfplan
 .pdm-python

@@ -17,7 +17,7 @@ elif [ $CLUSTER_ID == "" ]; then
     exit 1
 fi
 
-CLUSTER_NAME=tls-$ENVIRONMENT-$CLUSTER_ID
+CLUSTER_NAME=$ENVIRONMENT-tls-$CLUSTER_ID
 TF_WORKSPACE=$ENVIRONMENT-$CLUSTER_ID
 VARS_DIR=$(pwd)/environments/$ENVIRONMENT/k8s/$CLUSTER_NAME/infra
 
@@ -44,4 +44,4 @@ terraform -chdir=$K8S_MODULE init
 terraform -chdir=$K8S_MODULE  plan -var-file=$VARS_DIR/k8s_bootstrap.tfvars -out=$CLUSTER_NAME-k8s_bootstrap.tfplan
 terraform -chdir=$K8S_MODULE  apply $CLUSTER_NAME-k8s_bootstrap.tfplan
 
-pdm run ansible-playbook ansible/talos-k8s.yaml --extra-vars "kube_config=$HOME/.kube/$CLUSTER_NAME target_revision=talos_cluster_infra/proxmox-csi" 
+pdm run ansible-playbook ansible/talos-k8s.yaml --extra-vars "kube_config=$HOME/.kube/$CLUSTER_NAME target_revision=HEAD" 

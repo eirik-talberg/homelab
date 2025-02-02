@@ -1,6 +1,0 @@
-kubeconfig_folder     = "~/.kube"
-argocd_version        = "7.7.5"
-argocd_namespace      = "cluster-infra"
-hcp_project_id        = "320c9a8d-83a9-4d69-8d6f-cc5174d8bf48"
-hcp_service_principal = "sp-taldev-iac"
-cluster_name          = "tls-dev-02"
