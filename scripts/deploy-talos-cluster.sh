@@ -44,4 +44,4 @@ terraform -chdir=$K8S_MODULE init
 terraform -chdir=$K8S_MODULE  plan -var-file=$VARS_DIR/k8s_bootstrap.tfvars -out=$CLUSTER_NAME-k8s_bootstrap.tfplan
 terraform -chdir=$K8S_MODULE  apply $CLUSTER_NAME-k8s_bootstrap.tfplan
 
-pdm run ansible-playbook ansible/talos-k8s.yaml --extra-vars "kube_config=$HOME/.kube/$CLUSTER_NAME target_revision=HEAD" 
+pdm run ansible-playbook ansible/talos-k8s.yaml --extra-vars "kube_config=$HOME/.kube/$CLUSTER_NAME target_revision=$(git rev-parse --abbrev-ref HEAD)" 
