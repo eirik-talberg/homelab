@@ -3,8 +3,8 @@ talos_version     = "1.9.1"
 kubeconfig_folder = "~/.kube"
 controllers = {
   count     = 1
-  cpu_cores = 2
-  memory    = 2048
+  cpu_cores = 4
+  memory    = 4096
   disk_size = 32
 }
 workers = {

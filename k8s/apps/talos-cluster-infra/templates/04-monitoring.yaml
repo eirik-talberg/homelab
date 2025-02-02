@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   name: monitoring
   labels:
-    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce=privileged
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -23,3 +23,5 @@ spec:
       targetRevision: {{ .Values.monitoring.kube_prometheus_stack.version }}
   syncPolicy:
     automated: { }
+    syncOptions:
+      - CreateNamespace=true,ServerSideApply=true
