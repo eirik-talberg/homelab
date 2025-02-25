@@ -123,3 +123,10 @@ resource "kubernetes_secret" "proxmox_csi_config" {
     })
   }
 }
+
+module "vault_database" {
+  source         = "./modules/postgresql_database"
+  app_name       = "vault"
+  environment    = var.environment
+  hcp_project_id = var.hcp_project_id
+}

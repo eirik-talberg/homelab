@@ -12,3 +12,4 @@ ansible/k3s-ansible
 .DS_Store
 *.tfplan
 .pdm-python
+.vscode

@@ -48,3 +48,13 @@ resource "hcp_vault_secrets_app_iam_binding" "sp_iam_binding_letsencrypt_taldev"
   principal_id  = data.hcp_service_principal.sp.resource_id
   role          = "roles/secrets.app-secret-reader"
 }
+
+resource "hcp_vault_secrets_app" "dev_infra_secrets" {
+  app_name    = "dev-infra-secrets"
+  description = "Secrets for infrastructure for DEV"
+}
+
+resource "hcp_vault_secrets_app" "prod_infra_secrets" {
+  app_name    = "prod-infra-secrets"
+  description = "Secrets for infrastructure for DEV"
+}

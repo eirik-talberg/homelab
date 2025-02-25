@@ -52,3 +52,5 @@ argocd:
     service_name: argo-cd-argocd-server
     port_name: http
     certificate: argocd-server-tls-certificate
+vault:
+  version: 0.29.1

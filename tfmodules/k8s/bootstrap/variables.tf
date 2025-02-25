@@ -33,3 +33,7 @@ variable "pve_csi_user_id" {
   type    = string
   default = "kubernetes-csi@pve"
 }
+
+variable "environment" {
+  type = string
+}
